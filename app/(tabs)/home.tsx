@@ -10,11 +10,11 @@ const Home = () => {
     useAuth();
   const { user } = authState;
 
-  if (!profileTypeIsSelected) {
-    router.push("/profile-type");
-  } else if (!userProfileIsComplete) {
-    router.push("/complete-profile");
-  }
+  // if (!profileTypeIsSelected) {
+  //   router.push("/profile-type");
+  // } else if (!userProfileIsComplete) {
+  //   router.push("/complete-profile");
+  // } else {
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
       <ScrollView>
@@ -36,5 +36,6 @@ const Home = () => {
     </SafeAreaView>
   );
 };
+// };
 
 export default Home;

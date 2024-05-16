@@ -17,7 +17,7 @@ export const Requests = {
       .then(async (response) => {
         if (!response.ok) {
           return response.json().then((error) => {
-            throw Error(error.message);
+            throw Error(error.error);
           });
         } else {
           const token = response.headers.get("authorization");
@@ -39,7 +39,7 @@ export const Requests = {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((error) => {
-            throw Error(error.message);
+            throw Error(error.status.message);
           });
         } else {
           return response.json();

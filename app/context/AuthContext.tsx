@@ -41,40 +41,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   console.log(`userProfileIsComplete: ${userProfileIsComplete}`);
 
   const onLogin = async (credentials: UserCredentials) => {
-    const userData = await Requests.login(credentials).catch((err) =>
-      console.error(err)
-    );
-    if (userData) {
+    await Requests.login(credentials).then((userData) => {
       setAuthState({
         user: userData.data,
         authenticated: true,
       });
-      console.log(userData);
-      await SecureStore.setItemAsync("JWT", userData.token);
-    } else {
-      console.log("Login failed");
-    }
+      SecureStore.setItemAsync("JWT", userData.token);
+    });
   };
 
   const onSignUp = async (signUp: UserCredentials) => {
-    const userData = await Requests.signUp(signUp);
-    if (userData) {
-      router.push("/sign-in");
-    } else {
-      console.log("Sign up failed");
-    }
+    await Requests.signUp(signUp).then(() => router.push("/login"));
   };
 
   const onLogout = async () => {
     const token = await SecureStore.getItemAsync("JWT");
     if (token) {
-      await Requests.logout(token);
-      await SecureStore.deleteItemAsync("JWT");
-      setAuthState({
-        user: null,
-        authenticated: false,
-      });
-      router.push("/");
+      await Requests.logout(token)
+        .then(() => SecureStore.deleteItemAsync("JWT"))
+        .then(() => {
+          setAuthState({
+            user: null,
+            authenticated: false,
+          });
+        })
+        .then(() => router.push("/"));
     }
   };
 

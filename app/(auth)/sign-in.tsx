@@ -10,6 +10,7 @@ import { ComposedGesture, GestureDetector } from "react-native-gesture-handler";
 const SignIn = () => {
   const [form, setForm] = useState({ user: { email: "", password: "" } });
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const { onLogin, authState, userProfileIsComplete, profileTypeIsSelected } =
     useAuth();
 
@@ -22,7 +23,8 @@ const SignIn = () => {
       .then(() => resetForm())
       .then(() => {
         router.push("/home");
-      });
+      })
+      .catch((err) => setErrorMessage(err.message));
   };
 
   return (
@@ -37,6 +39,7 @@ const SignIn = () => {
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
             Log in to Care Link
           </Text>
+
           <FormField
             title="Email"
             value={form.user.email}
@@ -61,6 +64,7 @@ const SignIn = () => {
             keyBoardType=""
             placeholder=""
           />
+          <Text className="text-[#bd0a0a] text-base mt-4">{errorMessage}</Text>
           <CustomButton
             title="Sign In"
             handlePress={submit}

@@ -10,11 +10,22 @@ const SignUp = () => {
   const [form, setForm] = useState({
     user: { email: "", password: "" },
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [showPasswordMatchError, setShowPasswordMatchError] = useState(false);
   const { onSignUp } = useAuth();
 
+  const passwordsMatch = form.user.password === confirmPassword;
+  const shouldShowPasswordMatchError =
+    !passwordsMatch && showPasswordMatchError;
+
   const submit = () => {
-    onSignUp(form);
+    if (!passwordsMatch) {
+      setShowPasswordMatchError(true);
+    } else {
+      onSignUp(form).catch((err) => setErrorMessage(err.message));
+    }
   };
 
   return (
@@ -29,16 +40,6 @@ const SignUp = () => {
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
             Sign up for Care Link
           </Text>
-          {/* <FormField
-            title="Username"
-            value={form.user.username}
-            handleChangeText={(text) => {
-              setForm({ user: { ...form.user, username: text } });
-            }}
-            otherStyles="mt-7"
-            keyBoardType=""
-            placeholder=""
-          /> */}
           <FormField
             title="Email"
             value={form.user.email}
@@ -59,6 +60,27 @@ const SignUp = () => {
             keyBoardType=""
             placeholder=""
           />
+          <FormField
+            title="Confirm Password"
+            value={confirmPassword}
+            handleChangeText={(text) => {
+              setConfirmPassword(text);
+            }}
+            otherStyles="mt-7"
+            keyBoardType=""
+            placeholder=""
+          />
+          <Text className="text-[#bd0a0a] text-base mt-4">{errorMessage}</Text>
+          <Text
+            style={
+              shouldShowPasswordMatchError
+                ? { display: "flex" }
+                : { display: "none" }
+            }
+            className="text-[#bd0a0a] text-base mt-4"
+          >
+            Passwords do not match
+          </Text>
           <CustomButton
             title="Sign Up"
             handlePress={submit}
