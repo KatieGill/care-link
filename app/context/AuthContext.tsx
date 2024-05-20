@@ -28,20 +28,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: null,
     authenticated: false,
   });
-
-  const profileTypeIsSelected =
-    authState.user?.role === "care_provider" ||
-    authState.user?.role === "care_seeker";
-  console.log(`profileTypeIsSelected: ${profileTypeIsSelected}`);
-  const namesAreDefined =
-    authState.user?.first_name !== null &&
-    authState.user?.last_name !== null &&
-    authState.user?.username !== null;
-  const userProfileIsComplete = profileTypeIsSelected && namesAreDefined;
-  console.log(`userProfileIsComplete: ${userProfileIsComplete}`);
+  const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
+  const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
 
   const onLogin = async (credentials: UserCredentials) => {
-    await Requests.login(credentials).then((userData) => {
+    return await Requests.login(credentials).then((userData) => {
       setAuthState({
         user: userData.data,
         authenticated: true,

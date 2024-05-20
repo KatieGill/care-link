@@ -16,6 +16,8 @@ export const userSchema = z.object({
   bio: z.string().nullable(),
 });
 
+export const usersSchema = z.array(userSchema);
+
 export const userDataSchema = z.object({
   token: z.string(),
   data: userSchema,

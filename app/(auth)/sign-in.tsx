@@ -18,10 +18,17 @@ const SignIn = () => {
     setForm({ user: { email: "", password: "" } });
   };
 
-  const submit = () => {
-    onLogin(form)
+  const submit = async () => {
+    return await onLogin(form)
       .then(() => resetForm())
       .then(() => {
+        // if (!profileTypeIsSelected) {
+        //   router.push("/profile-type");
+        // } else if (!userProfileIsComplete) {
+        //   router.push("/complete-profile");
+        // } else {
+        //   router.push("/home");
+        // }
         router.push("/home");
       })
       .catch((err) => setErrorMessage(err.message));

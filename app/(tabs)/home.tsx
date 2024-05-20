@@ -24,6 +24,9 @@ const Home = () => {
             resizeMode="contain"
             className="w-[230px] h-[70px]"
           />
+          <Text>
+            {!userProfileIsComplete ? "Complete your user profile" : ""}
+          </Text>
           <CustomButton
             title="Logout"
             handlePress={onLogout}
