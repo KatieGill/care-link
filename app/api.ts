@@ -104,7 +104,7 @@ export const Requests = {
       .then((user) => userSchema.parse(user.data));
   },
   getUsers: (userAttribute: string, userAttributeValue: string) => {
-    return fetch(`${API_URL}/${userAttribute}/${userAttributeValue}`, {
+    return fetch(`${API_URL}/users/${userAttribute}/${userAttributeValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
