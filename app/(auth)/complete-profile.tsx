@@ -5,6 +5,7 @@ import FormField from "../../components/FormField";
 import { useAuth } from "../context/AuthContext";
 import CustomButton from "../../components/CustomButton";
 import { router } from "expo-router";
+import ImagePickerScreen from "../../components/ImagePicker";
 
 const CompleteProfile = () => {
   const { authState, updateCurrentUserData } = useAuth();
@@ -18,6 +19,7 @@ const CompleteProfile = () => {
     years_experience: "",
     pay: "",
     bio: "",
+    display_picture: "",
   });
   const submit = () => {
     updateCurrentUserData(form).then(() => router.push("/home"));
@@ -121,6 +123,12 @@ const CompleteProfile = () => {
               style={{ height: 200 }}
             ></TextInput>
           </View>
+          <View className="space-y-2">
+            <Text className="text-base font-lRegular text-[#262322]">
+              Profile Image
+            </Text>
+          </View>
+          <ImagePickerScreen form={form} setForm={setForm} />
           <CustomButton
             title="Submit"
             handlePress={submit}

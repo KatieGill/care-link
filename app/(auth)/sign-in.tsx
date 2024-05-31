@@ -29,7 +29,7 @@ const SignIn = () => {
         // } else {
         //   router.push("/home");
         // }
-        router.push("/home");
+        router.push("home");
       })
       .catch((err) => setErrorMessage(err.message));
   };
@@ -76,7 +76,7 @@ const SignIn = () => {
             title="Sign In"
             handlePress={submit}
             isLoading={isLoading}
-            containerStyles="mt-7"
+            containerStyles="px-4"
             textStyles=""
           />
           <View className="justify-center pt-5 flex-row gap-2">

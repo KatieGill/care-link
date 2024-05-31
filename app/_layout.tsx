@@ -8,7 +8,7 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
-
+import "react-native-reanimated";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {

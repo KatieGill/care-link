@@ -14,6 +14,7 @@ export const userSchema = z.object({
   years_experience: z.number().nullable(),
   pay: z.number().nullable(),
   bio: z.string().nullable(),
+  image_url: z.string().nullable(),
 });
 
 export const usersSchema = z.array(userSchema);

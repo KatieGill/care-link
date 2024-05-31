@@ -32,6 +32,13 @@ const AuthLayout = () => {
             title: "Complete Profile",
           }}
         />
+        <Stack.Screen
+          name="profile-picture"
+          options={{
+            headerShown: false,
+            title: "Profile Picture",
+          }}
+        />
       </Stack>
     </>
   );

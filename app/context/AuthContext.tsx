@@ -10,6 +10,7 @@ type AuthProps = {
   onLogin: (login: UserCredentials) => Promise<void>;
   onLogout: () => Promise<void>;
   updateCurrentUserData: (data: {}) => Promise<void>;
+  updateCurrentUserPicture: (data: FormData) => Promise<void>;
   profileTypeIsSelected: boolean;
   userProfileIsComplete: boolean;
 };
@@ -68,13 +69,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateCurrentUserData = async (data: {}) => {
     const token = await SecureStore.getItemAsync("JWT");
-    console.log(token);
     if (token && authState.user) {
       return await Requests.updateCurrentUser(
         token,
         data,
         authState.user.id
-      ).then((userData) => getCurrentUserData(token));
+      ).then(() => getCurrentUserData(token));
+    } else {
+      throw new Error("Unauthorized");
+    }
+  };
+
+  const updateCurrentUserPicture = async (data: FormData) => {
+    const token = await SecureStore.getItemAsync("JWT");
+    if (token && authState.user) {
+      return await Requests.updateCurrentUserPicture(data).then(() =>
+        getCurrentUserData(token)
+      );
     } else {
       throw new Error("Unauthorized");
     }
@@ -100,6 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         authState,
         onLogout,
         updateCurrentUserData,
+        updateCurrentUserPicture,
         profileTypeIsSelected,
         userProfileIsComplete,
       }}

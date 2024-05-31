@@ -8,6 +8,7 @@ import { Requests } from "../api";
 import { User } from "../../types/types";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
+import ImagePickerScreen from "../../components/ImagePicker";
 
 const Home = () => {
   const { onLogout, authState, profileTypeIsSelected, userProfileIsComplete } =
@@ -67,6 +68,13 @@ const Home = () => {
             )}
           />
         </View>
+        <CustomButton
+          title="Profile Picture"
+          handlePress={() => router.push("profile-picture")}
+          containerStyles="px-4"
+          textStyles=""
+          isLoading={false}
+        />
       </ScrollView>
       {/* <FlatList
         data={userProfiles}

@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView } from "react-native";
+import React from "react";
+import ProfilePicture from "../(auth)/profile-picture";
 
 const Links = () => {
   return (
-    <View>
-      <Text>Links</Text>
-    </View>
-  )
-}
+    <SafeAreaView>
+      <View>
+        <Text>Links</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-export default Links
+export default Links;
