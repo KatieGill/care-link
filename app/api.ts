@@ -82,7 +82,7 @@ export const Requests = {
       })
       .then((user) => {
         console.log("current user", user);
-        return userSchema.parse(user.data);
+        return userSchema.parse(user);
       });
   },
   updateCurrentUser: (token: string, data: {}, userId: number) => {
@@ -106,57 +106,23 @@ export const Requests = {
       })
       .then((user) => {
         console.log("current user", user);
-        userSchema.parse(user.data);
+        userSchema.parse(user);
       });
   },
   updateCurrentUserPicture: (data: FormData) => {
-    // const csrfToken = (async () => {
-    //   const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
-    //   const { document } = dom.window;
-    //   return document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
-    // })();
-    // const headers = new Headers();
-    // const token = await csrfToken;
-    // if (token) {
-    //   headers.set("X-CSRF-Token", token);
-    // } else {
-    //   throw new Error("CSRF token not found");
-    // }
     return fetch(`${API_URL}/uploads`, {
       method: "POST",
       body: data,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw Error(error.status.message);
-          });
-        } else {
-          return response.json();
-        }
-      })
-      .then((user) => console.log(user));
+    }).then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw Error(error.status.message);
+        });
+      } else {
+        return response.json();
+      }
+    });
   },
-  // updateCurrentUserPicture: (token: string, data: FormData, userId: number) => {
-  //   return fetch(`${API_URL}/current_user/${userId}`, {
-  //     method: "POST",
-  //     body: data,
-  //     headers: {
-  //       Authorization: token,
-  //     },
-  //     credentials: "include",
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         return response.json().then((error) => {
-  //           throw Error(error.status.message);
-  //         });
-  //       } else {
-  //         return response.json();
-  //       }
-  //     })
-  //     .then((user) => console.log(user));
-  // },
   getUsers: (userAttribute: string, userAttributeValue: string) => {
     return fetch(`${API_URL}/users/${userAttribute}/${userAttributeValue}`, {
       method: "GET",
@@ -175,8 +141,7 @@ export const Requests = {
         }
       })
       .then((users) => {
-        console.log("users", users);
-        return usersSchema.parse(users.data);
+        return usersSchema.parse(users);
       });
   },
 };
