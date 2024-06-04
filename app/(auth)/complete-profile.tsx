@@ -6,23 +6,46 @@ import { useAuth } from "../context/AuthContext";
 import CustomButton from "../../components/CustomButton";
 import { router } from "expo-router";
 import ImagePickerScreen from "../../components/ImagePicker";
+import * as ImagePicker from "expo-image-picker";
 
 const CompleteProfile = () => {
-  const { authState, updateCurrentUserData } = useAuth();
+  const { authState, updateCurrentUserData, updateCurrentUserPicture } =
+    useAuth();
   const { user } = authState;
+  const [image, setImage] = useState<ImagePicker.ImagePickerResult>();
+  const [imageUrl, setImageUrl] = useState<string | undefined | null>(
+    user?.image_url
+  );
   const [form, setForm] = useState({
-    first_name: "",
-    last_name: "",
-    username: "",
-    zip_code: "",
-    number_of_children: "",
-    years_experience: "",
-    pay: "",
-    bio: "",
-    display_picture: "",
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    username: user?.username,
+    zip_code: user?.zip_code,
+    number_of_children: user?.number_of_children,
+    years_experience: user?.years_experience,
+    pay: user?.pay,
+    bio: user?.bio,
   });
+
+  const handleSetImage = (imageData: ImagePicker.ImagePickerResult) => {
+    setImage(imageData);
+  };
   const submit = () => {
-    updateCurrentUserData(form).then(() => router.push("/home"));
+    const formData = new FormData();
+    if (image?.assets) console.log(image.assets[0]);
+    if (image?.assets) {
+      formData.append("upload[image]", {
+        uri: image.assets[0].uri,
+        type: image.assets[0].mimeType,
+        name: image.assets[0].fileName,
+      });
+      formData.append("upload[user_id]", authState.user?.id);
+      updateCurrentUserData(form)
+        .then(() => updateCurrentUserPicture(formData))
+        .then(() => router.push("/home"));
+    } else {
+      updateCurrentUserData(form).then(() => router.push("/home"));
+    }
   };
 
   return (
@@ -34,7 +57,7 @@ const CompleteProfile = () => {
           </Text>
           <FormField
             title="Username"
-            value={form.username}
+            value={form.username ? form.username : ""}
             handleChangeText={(text) => {
               setForm({ ...form, username: text });
             }}
@@ -44,7 +67,7 @@ const CompleteProfile = () => {
           />
           <FormField
             title="First Name"
-            value={form.first_name}
+            value={form.first_name ? form.first_name : ""}
             handleChangeText={(text) => {
               setForm({ ...form, first_name: text });
             }}
@@ -54,7 +77,7 @@ const CompleteProfile = () => {
           />
           <FormField
             title="Last Name"
-            value={form.last_name}
+            value={form.last_name ? form.last_name : ""}
             handleChangeText={(text) => {
               setForm({ ...form, last_name: text });
             }}
@@ -64,7 +87,7 @@ const CompleteProfile = () => {
           />
           <FormField
             title="Zip Code"
-            value={form.zip_code}
+            value={form.zip_code ? form.zip_code.toString() : ""}
             handleChangeText={(text) => {
               setForm({ ...form, zip_code: text });
             }}
@@ -75,7 +98,9 @@ const CompleteProfile = () => {
           {user?.role === "care_provider" ? (
             <FormField
               title="Years of Experience"
-              value={form.years_experience}
+              value={
+                form.years_experience ? form.years_experience.toString() : ""
+              }
               handleChangeText={(text) => {
                 setForm({ ...form, years_experience: text });
               }}
@@ -86,7 +111,11 @@ const CompleteProfile = () => {
           ) : (
             <FormField
               title="Number of Children"
-              value={form.number_of_children}
+              value={
+                form.number_of_children
+                  ? form.number_of_children.toString()
+                  : ""
+              }
               handleChangeText={(text) => {
                 setForm({ ...form, number_of_children: text });
               }}
@@ -97,7 +126,7 @@ const CompleteProfile = () => {
           )}
           <FormField
             title={user?.role === "care_provider" ? "Starting Fee" : "Pay Rate"}
-            value={form.pay}
+            value={form.pay ? form.pay.toString() : ""}
             handleChangeText={(text) => {
               setForm({ ...form, pay: text });
             }}
@@ -114,7 +143,7 @@ const CompleteProfile = () => {
           >
             <TextInput
               className="flex-1 text-[#262322] font-lRegular text-base pt-4"
-              value={form.bio}
+              value={form.bio ? form.bio : ""}
               onChangeText={(text) => {
                 setForm({ ...form, bio: text });
               }}
@@ -128,7 +157,11 @@ const CompleteProfile = () => {
               Profile Image
             </Text>
           </View>
-          <ImagePickerScreen form={form} setForm={setForm} />
+          <ImagePickerScreen
+            setImage={handleSetImage}
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+          />
           <CustomButton
             title="Submit"
             handlePress={submit}

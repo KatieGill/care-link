@@ -18,12 +18,14 @@ const Home = () => {
 
   const profileRole =
     user?.role === "care_provider" ? "care_seeker" : "care_provider";
-  // if (!profileTypeIsSelected) {
-  //   router.push("/profile-type");
-  // } else if (!userProfileIsComplete) {
-  //   router.push("/complete-profile");
-  // } else {
+
   useEffect(() => {
+    if (!profileTypeIsSelected) {
+      router.push("/profile-type");
+    }
+    if (!userProfileIsComplete) {
+      router.push("/complete-profile");
+    }
     const getUserProfiles = async () => {
       await Requests.getUsers("role", profileRole).then((users) =>
         setUserProfiles(users)
@@ -69,8 +71,8 @@ const Home = () => {
           />
         </View>
         <CustomButton
-          title="Profile Picture"
-          handlePress={() => router.push("profile-picture")}
+          title="Complete Profile"
+          handlePress={() => router.push("complete-profile")}
           containerStyles="px-4"
           textStyles=""
           isLoading={false}

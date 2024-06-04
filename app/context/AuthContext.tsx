@@ -23,14 +23,29 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authState, setAuthState] = useState<{
-    user: User | null;
+    user: User;
     authenticated: boolean;
   }>({
-    user: null,
+    user: {} as User,
     authenticated: false,
   });
-  const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
-  const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
+  // const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
+  // const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
+
+  const profileTypeIsSelected =
+    authState.user?.role !== null || authState.user?.role !== undefined;
+
+  const userAttributes = Object.values(authState.user);
+  const omittedAttribute =
+    authState.user.role === "care_provider"
+      ? "years_experience"
+      : "number_of_children";
+  const omittedAttributeIndex = userAttributes.indexOf(omittedAttribute);
+  const updatedUserAttributes = userAttributes.splice(omittedAttributeIndex, 1);
+  const userProfileIsComplete = !updatedUserAttributes.includes(null);
+
+  console.log("profileTypeIsSelected", profileTypeIsSelected);
+  console.log("userProfileIsComplete", userProfileIsComplete);
 
   const onLogin = async (credentials: UserCredentials) => {
     return await Requests.login(credentials).then((userData) => {
@@ -53,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .then(() => SecureStore.deleteItemAsync("JWT"))
         .then(() => {
           setAuthState({
-            user: null,
+            user: {} as User,
             authenticated: false,
           });
         })
@@ -69,6 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateCurrentUserData = async (data: {}) => {
     const token = await SecureStore.getItemAsync("JWT");
+    console.log("token", token);
     if (token && authState.user) {
       return await Requests.updateCurrentUser(
         token,

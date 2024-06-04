@@ -7,7 +7,7 @@ import {
 import * as SecureStorage from "expo-secure-store";
 
 const API_URL = "http://localhost:3001";
-const JWT = SecureStorage.getItemAsync("JWT");
+// const JWT = SecureStorage.getItemAsync("JWT");
 
 export const Requests = {
   login: (login: UserCredentials) => {
@@ -27,7 +27,7 @@ export const Requests = {
         } else {
           const token = response.headers.get("authorization");
           const data = await response.json();
-          return { token: token, data: data.data };
+          return { token: token, data: data };
         }
       })
       .then((userData) => userDataSchema.parse(userData));
@@ -113,15 +113,17 @@ export const Requests = {
     return fetch(`${API_URL}/uploads`, {
       method: "POST",
       body: data,
-    }).then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw Error(error.status.message);
-        });
-      } else {
-        return response.json();
-      }
-    });
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw Error(error.status.message);
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .then((res) => console.log("pic updated", res.data.image));
   },
   getUsers: (userAttribute: string, userAttributeValue: string) => {
     return fetch(`${API_URL}/users/${userAttribute}/${userAttributeValue}`, {

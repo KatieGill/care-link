@@ -5,11 +5,12 @@ import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
   const { onLogout, authState } = useAuth();
+  console.log(authState.user?.image_url);
   return (
     <SafeAreaView>
       {authState.user?.image_url ? (
         <Image
-          source={{ uri: authState.user?.image_url }}
+          source={{ uri: `http://localhost:3001/${authState.user?.image_url}` }}
           style={{ width: 200, height: 200, marginTop: 20 }}
         />
       ) : (

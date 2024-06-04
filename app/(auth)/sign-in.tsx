@@ -22,14 +22,15 @@ const SignIn = () => {
     return await onLogin(form)
       .then(() => resetForm())
       .then(() => {
-        // if (!profileTypeIsSelected) {
-        //   router.push("/profile-type");
-        // } else if (!userProfileIsComplete) {
-        //   router.push("/complete-profile");
-        // } else {
-        //   router.push("/home");
-        // }
-        router.push("home");
+        if (!profileTypeIsSelected) {
+          console.log("profileType is not selected");
+          router.push("/profile-type");
+        } else if (!userProfileIsComplete) {
+          console.log("user profile is not complete");
+          router.push("/complete-profile");
+        } else {
+          router.push("/home");
+        }
       })
       .catch((err) => setErrorMessage(err.message));
   };

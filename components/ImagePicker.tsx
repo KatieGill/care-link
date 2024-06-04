@@ -13,11 +13,13 @@ import CustomButton from "./CustomButton";
 
 const ImagePickerScreen = ({
   setImage,
+  setImageUrl,
+  imageUrl,
 }: {
   setImage: (imageData: ImagePicker.ImagePickerResult) => void;
+  setImageUrl: (imageUrl: string) => void;
+  imageUrl: string | undefined | null;
 }) => {
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -55,7 +57,7 @@ const ImagePickerScreen = ({
     <View>
       {imageUrl && (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: `http://localhost:3001/${imageUrl}` }}
           style={{ width: 200, height: 200, marginTop: 20 }}
         />
       )}
