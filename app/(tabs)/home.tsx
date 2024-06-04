@@ -9,6 +9,7 @@ import { User } from "../../types/types";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import ImagePickerScreen from "../../components/ImagePicker";
+import ProfileCard from "../../components/ProfileCard";
 
 const Home = () => {
   const { onLogout, authState, profileTypeIsSelected, userProfileIsComplete } =
@@ -36,8 +37,8 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
-      <ScrollView>
-        <View className="my-6 px-4 space-y-6">
+      {/* <ScrollView> */}
+      {/* <View className="my-6 px-4 space-y-6">
           <View className="justify-between items-start flex-row mb-6">
             <View>
               <Text className="text-[#78716c] font-lRegular text-sm">
@@ -61,7 +62,7 @@ const Home = () => {
             // data={[]}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <Text>{item.email}</Text>}
-            horizontal
+            // horizontal
             ListEmptyComponent={() => (
               <EmptyState
                 title="No profiles found"
@@ -69,19 +70,12 @@ const Home = () => {
               />
             )}
           />
-        </View>
-        <CustomButton
-          title="Complete Profile"
-          handlePress={() => router.push("complete-profile")}
-          containerStyles="px-4"
-          textStyles=""
-          isLoading={false}
-        />
-      </ScrollView>
-      {/* <FlatList
+        </View> */}
+      {/* </ScrollView> */}
+      <FlatList
         data={userProfiles}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text>{item.email}</Text>}
+        renderItem={({ item }) => <ProfileCard user={item} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -104,7 +98,15 @@ const Home = () => {
             <SearchInput />
           </View>
         )}
-      /> */}
+      />
+
+      <CustomButton
+        title="Complete Profile"
+        handlePress={() => router.push("complete-profile")}
+        containerStyles="px-4"
+        textStyles=""
+        isLoading={false}
+      />
     </SafeAreaView>
   );
 };
