@@ -32,7 +32,6 @@ const CompleteProfile = () => {
   };
   const submit = () => {
     const formData = new FormData();
-    if (image?.assets) console.log(image.assets[0]);
     if (image?.assets) {
       formData.append("upload[image]", {
         uri: image.assets[0].uri,
@@ -44,7 +43,7 @@ const CompleteProfile = () => {
         .then(() => updateCurrentUserPicture(formData))
         .then(() => router.push("/home"));
     } else {
-      updateCurrentUserData(form).then(() => router.push("/home"));
+      updateCurrentUserData(form).then(() => router.push("/profile"));
     }
   };
 

@@ -2,42 +2,80 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { User } from "../types/types";
 
-const ProfileCard = ({ user }: { user: User }) => {
+const ProfileCard = ({ user }: { user: User | null }) => {
   return (
-    <View className="px-6 mx-4 my-4  bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
-      <Text className="text-[#262322] text-2xl font-lBold mt-2">
-        {user.username}
+    <View className="px-6 my-4 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
+      <Text className="text-[#262322] text-xl font-lBold text-center mt-2">
+        Profile Details
       </Text>
-      <View className="justify-between items-start flex-row mb-2">
-        <View>
-          {user.role === "care_provider" ? (
-            <Text className="text-[#78716c] font-lRegular text-sm">
-              Years of experience: {user.years_experience}
-            </Text>
-          ) : (
-            <Text className="text-[#78716c] font-lRegular text-sm">
-              Number of children: {user.years_experience}
-            </Text>
-          )}
+      <View className="flex-row items-center my-2">
+        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+          <Image
+            source={require("../assets/icons/username.png")}
+            resizeMode="contain"
+            className="w-8 h-9"
+            style={{ margin: "auto" }}
+          />
         </View>
-        <View>
-          <Text className="text-[#78716c] font-lRegular text-sm">
-            ${user.pay}/hr
-          </Text>
+        <Text className="text-[#262322] font-lRegular text-lg ml-3">
+          {user?.username}
+        </Text>
+      </View>
+      <View className="flex-row items-center my-2">
+        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+          <Image
+            source={require("../assets/icons/arroba.png")}
+            resizeMode="contain"
+            className="w-8 h-9"
+            style={{ margin: "auto" }}
+          />
         </View>
+        <Text className="text-[#262322] font-lRegular text-lg ml-3">
+          {user?.email}
+        </Text>
       </View>
-
-      <View className="flex justify-around">
-        <Image
-          source={{ uri: `http://localhost:3001/${user.image_url}` }}
-          style={{ width: 300, height: 300, margin: "auto" }}
-          className="rounded"
-        />
+      <View className="flex-row items-center my-2">
+        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+          <Image
+            source={require("../assets/icons/kids.png")}
+            resizeMode="contain"
+            className="w-8 h-9"
+            style={{ margin: "auto" }}
+          />
+        </View>
+        <Text className="text-[#262322] font-lRegular text-lg ml-3">
+          {user?.role === "care_seeker"
+            ? `${user?.number_of_children} children`
+            : `${user?.years_experience} years of experience`}
+        </Text>
       </View>
-
-      <Text className="text-[#78716c] font-lRegular text-sm mb-2 mt-2">
-        {user.bio}
-      </Text>
+      <View className="flex-row items-center my-2">
+        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+          <Image
+            source={require("../assets/icons/dollar.png")}
+            resizeMode="contain"
+            className="w-8 h-9"
+            style={{ margin: "auto" }}
+          />
+        </View>
+        <Text className="text-[#262322] font-lRegular text-lg ml-3">
+          {`$${user?.pay}/hr`}{" "}
+          {user?.role === "care_seeker" ? "pay rate" : "base rate"}
+        </Text>
+      </View>
+      <View className="flex-row items-center my-2">
+        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+          <Image
+            source={require("../assets/icons/location-pin.png")}
+            resizeMode="contain"
+            className="w-8 h-9"
+            style={{ margin: "auto" }}
+          />
+        </View>
+        <Text className="text-[#262322] font-lRegular text-lg ml-3">
+          {user?.zip_code}
+        </Text>
+      </View>
     </View>
   );
 };

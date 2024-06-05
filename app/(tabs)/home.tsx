@@ -9,7 +9,7 @@ import { User } from "../../types/types";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import ImagePickerScreen from "../../components/ImagePicker";
-import ProfileCard from "../../components/ProfileCard";
+import UserCard from "../../components/UserCard";
 
 const Home = () => {
   const { onLogout, authState, profileTypeIsSelected, userProfileIsComplete } =
@@ -75,7 +75,7 @@ const Home = () => {
       <FlatList
         data={userProfiles}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ProfileCard user={item} />}
+        renderItem={({ item }) => <UserCard user={item} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -98,14 +98,6 @@ const Home = () => {
             <SearchInput />
           </View>
         )}
-      />
-
-      <CustomButton
-        title="Complete Profile"
-        handlePress={() => router.push("complete-profile")}
-        containerStyles="px-4"
-        textStyles=""
-        isLoading={false}
       />
     </SafeAreaView>
   );
