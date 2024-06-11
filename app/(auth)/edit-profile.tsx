@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ScrollView, Image } from "react-native";
+import { View, Text, TextInput, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import FormField from "../../components/FormField";
@@ -10,25 +10,23 @@ import * as ImagePicker from "expo-image-picker";
 import type { UserFormInput } from "../../types/types";
 import UserForm from "../../components/UserForm";
 
-const CompleteProfile = () => {
+const EditProfile = () => {
   const { authState, updateCurrentUserData, updateCurrentUserPicture } =
     useAuth();
-  const avatarImage = require("../../assets/images/avatar.png");
-  const avatarImageUri = Image.resolveAssetSource(avatarImage).uri;
   const { user } = authState;
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>();
   const [imageUrl, setImageUrl] = useState<string | undefined | null>(
-    avatarImageUri
+    user?.image_url
   );
   const [form, setForm] = useState<UserFormInput>({
-    first_name: null,
-    last_name: null,
-    username: null,
-    zip_code: null,
-    number_of_children: null,
-    years_experience: null,
-    pay: null,
-    bio: null,
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    username: user?.username,
+    zip_code: user?.zip_code,
+    number_of_children: user?.number_of_children,
+    years_experience: user?.years_experience,
+    pay: user?.pay,
+    bio: user?.bio,
   });
 
   const handleSetImage = (imageData: ImagePicker.ImagePickerResult) => {
@@ -42,17 +40,13 @@ const CompleteProfile = () => {
         type: image.assets[0].mimeType,
         name: image.assets[0].fileName,
       });
+      formData.append("upload[user_id]", authState.user?.id);
+      updateCurrentUserData(form)
+        .then(() => updateCurrentUserPicture(formData))
+        .then(() => router.push("/profile"));
     } else {
-      formData.append("upload[image]", {
-        uri: avatarImageUri,
-        type: "image/png",
-        name: "avatar.png",
-      });
+      updateCurrentUserData(form).then(() => router.push("/profile"));
     }
-    formData.append("upload[user_id]", authState.user?.id);
-    updateCurrentUserData(form)
-      .then(() => updateCurrentUserPicture(formData))
-      .then(() => router.push("/home"));
   };
 
   return (
@@ -60,7 +54,7 @@ const CompleteProfile = () => {
       <ScrollView>
         <View className="w-full min-h-[85vh] justify-center px-4">
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
-            Complete your user profile to get started
+            Update your user profile
           </Text>
           <UserForm form={form} setForm={setForm} />
           <View className="space-y-2">
@@ -72,8 +66,9 @@ const CompleteProfile = () => {
             setImage={handleSetImage}
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
-            isEdit={false}
+            isEdit={true}
           />
+
           <CustomButton
             title="Submit"
             handlePress={submit}
@@ -87,4 +82,4 @@ const CompleteProfile = () => {
   );
 };
 
-export default CompleteProfile;
+export default EditProfile;

@@ -70,7 +70,7 @@ const Profile = () => {
           </View>
           <CustomButton
             title="Edit Profile"
-            handlePress={() => router.push("complete-profile")}
+            handlePress={() => router.push("edit-profile")}
             containerStyles="px-4 mt-4"
             textStyles=""
             isLoading={false}
@@ -84,22 +84,6 @@ const Profile = () => {
           />
         </View>
       </ScrollView>
-      {/* {authState.user?.image_url ? (
-        <Image
-          source={{ uri: `http://localhost:3001/${authState.user?.image_url}` }}
-          style={{ width: 200, height: 200, marginTop: 20 }}
-        />
-      ) : (
-        ""
-      )}
-
-      <CustomButton
-        title="Logout"
-        handlePress={onLogout}
-        isLoading={false}
-        containerStyles="px-4"
-        textStyles=""
-      /> */}
     </SafeAreaView>
   );
 };

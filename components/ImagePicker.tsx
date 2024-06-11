@@ -15,11 +15,15 @@ const ImagePickerScreen = ({
   setImage,
   setImageUrl,
   imageUrl,
+  isEdit,
 }: {
   setImage: (imageData: ImagePicker.ImagePickerResult) => void;
   setImageUrl: (imageUrl: string) => void;
   imageUrl: string | undefined | null;
+  isEdit: boolean;
 }) => {
+  const [appendHostToImageUrl, setAppendHostToImageUrl] = useState(isEdit);
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -50,17 +54,26 @@ const ImagePickerScreen = ({
     if (!result.canceled) {
       setImageUrl(result.assets[0].uri);
       setImage(result);
+      setAppendHostToImageUrl(false);
     }
   };
 
   return (
     <View>
-      {imageUrl && (
-        <Image
-          source={{ uri: imageUrl }}
-          style={{ width: 200, height: 200, marginTop: 20 }}
-        />
-      )}
+      <View className="mt-2">
+        {imageUrl && (
+          <Image
+            source={{
+              uri: appendHostToImageUrl
+                ? `http://localhost:3001/${imageUrl}`
+                : imageUrl,
+            }}
+            style={{ width: 200, height: 200, margin: "auto" }}
+            className="rounded"
+          />
+        )}
+      </View>
+
       <CustomButton
         title="Pick an image from camera roll"
         handlePress={pickImage}
