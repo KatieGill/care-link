@@ -21,10 +21,9 @@ const Home = () => {
     user?.role === "care_provider" ? "care_seeker" : "care_provider";
 
   useEffect(() => {
-    if (!profileTypeIsSelected) {
+    if (profileTypeIsSelected === false) {
       router.push("/profile-type");
-    }
-    if (!userProfileIsComplete) {
+    } else if (userProfileIsComplete === false) {
       router.push("/complete-profile");
     }
     const getUserProfiles = async () => {
@@ -33,7 +32,7 @@ const Home = () => {
       );
     };
     getUserProfiles();
-  }, []);
+  }, [userProfileIsComplete, profileTypeIsSelected]);
 
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">

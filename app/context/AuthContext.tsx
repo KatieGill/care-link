@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loadToken();
     setProfileTypeIsSelected(profileTypeIsSelectedValue);
     setUserProfileIsComplete(userProfileIsCompleteValue);
-  }, []);
+  }, [profileTypeIsSelectedValue, userProfileIsCompleteValue]);
 
   return (
     <AuthContext.Provider

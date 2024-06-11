@@ -57,7 +57,7 @@ const ImagePickerScreen = ({
     <View>
       {imageUrl && (
         <Image
-          source={{ uri: `http://localhost:3001/${imageUrl}` }}
+          source={{ uri: imageUrl }}
           style={{ width: 200, height: 200, marginTop: 20 }}
         />
       )}
