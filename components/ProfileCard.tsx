@@ -4,7 +4,7 @@ import { User } from "../types/types";
 
 const ProfileCard = ({ user }: { user: User | null }) => {
   return (
-    <View className="px-6 my-4 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
+    <View className="px-6 mb-2 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
       <Text className="text-[#262322] text-xl font-lBold text-center mt-2">
         Profile Details
       </Text>

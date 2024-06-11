@@ -29,11 +29,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: {} as User,
     authenticated: false,
   });
-  // const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
-  // const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
+  const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
+  const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
 
-  const profileTypeIsSelected =
-    authState.user?.role !== null || authState.user?.role !== undefined;
+  const profileTypeIsSelectedValue =
+    authState.user?.role !== null && authState.user?.role !== undefined;
 
   const userAttributes = Object.values(authState.user);
   const omittedAttribute =
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       : "number_of_children";
   const omittedAttributeIndex = userAttributes.indexOf(omittedAttribute);
   const updatedUserAttributes = userAttributes.splice(omittedAttributeIndex, 1);
-  const userProfileIsComplete = !updatedUserAttributes.includes(null);
+  const userProfileIsCompleteValue = !updatedUserAttributes.includes(null);
 
   console.log("profileTypeIsSelected", profileTypeIsSelected);
   console.log("userProfileIsComplete", userProfileIsComplete);
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const onSignUp = async (signUp: UserCredentials) => {
-    await Requests.signUp(signUp).then(() => router.push("/login"));
+    await Requests.signUp(signUp).then(() => router.push("/sign-in"));
   };
 
   const onLogout = async () => {
@@ -117,6 +117,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     loadToken();
+    setProfileTypeIsSelected(profileTypeIsSelectedValue);
+    setUserProfileIsComplete(userProfileIsCompleteValue);
   }, []);
 
   return (

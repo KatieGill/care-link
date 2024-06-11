@@ -22,10 +22,10 @@ const SignIn = () => {
     return await onLogin(form)
       .then(() => resetForm())
       .then(() => {
-        if (!profileTypeIsSelected) {
-          console.log("profileType is not selected");
+        if (profileTypeIsSelected === false) {
+          console.log("profileType is not selected", profileTypeIsSelected);
           router.push("/profile-type");
-        } else if (!userProfileIsComplete) {
+        } else if (userProfileIsComplete === false) {
           console.log("user profile is not complete");
           router.push("/complete-profile");
         } else {

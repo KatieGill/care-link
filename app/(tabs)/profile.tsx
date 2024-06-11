@@ -19,8 +19,8 @@ const Profile = () => {
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
       <ScrollView>
-        <View className="my-6 px-4 space-y-6 flex items-stretch">
-          <View className="justify-start flex-row">
+        <View className="my-6 px-4 flex items-stretch">
+          <View className="mb-4 justify-start flex-row">
             <View className="mr-4">
               <Image
                 source={{
@@ -58,6 +58,16 @@ const Profile = () => {
               </View>
             </View>
           </View>
+
+          <ProfileCard user={user} />
+          <View className="px-6 mb-2 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
+            <Text className="text-[#262322] text-xl font-lBold text-center mt-2">
+              Bio
+            </Text>
+            <Text className="text-[#262322] font-lRegular text-base py-4">
+              {user?.bio}
+            </Text>
+          </View>
           <CustomButton
             title="Edit Profile"
             handlePress={() => router.push("complete-profile")}
@@ -65,7 +75,6 @@ const Profile = () => {
             textStyles=""
             isLoading={false}
           />
-          <ProfileCard user={user} />
           <CustomButton
             title="Logout"
             handlePress={onLogout}
