@@ -30,29 +30,35 @@ const CompleteProfile = () => {
     pay: null,
     bio: null,
   });
+  const [shouldShowErrors, setShouldShowErrors] = useState(false);
+  const [errorsPresent, setErrorsPresent] = useState(false);
 
   const handleSetImage = (imageData: ImagePicker.ImagePickerResult) => {
     setImage(imageData);
   };
   const submit = () => {
-    const formData = new FormData();
-    if (image?.assets) {
-      formData.append("upload[image]", {
-        uri: image.assets[0].uri,
-        type: image.assets[0].mimeType,
-        name: image.assets[0].fileName,
-      });
+    if (errorsPresent) {
+      setShouldShowErrors(true);
     } else {
-      formData.append("upload[image]", {
-        uri: avatarImageUri,
-        type: "image/png",
-        name: "avatar.png",
-      });
+      const formData = new FormData();
+      if (image?.assets) {
+        formData.append("upload[image]", {
+          uri: image.assets[0].uri,
+          type: image.assets[0].mimeType,
+          name: image.assets[0].fileName,
+        });
+      } else {
+        formData.append("upload[image]", {
+          uri: avatarImageUri,
+          type: "image/png",
+          name: "avatar.png",
+        });
+      }
+      formData.append("upload[user_id]", authState.user?.id);
+      updateCurrentUserData(form)
+        .then(() => updateCurrentUserPicture(formData))
+        .then(() => router.push("/home"));
     }
-    formData.append("upload[user_id]", authState.user?.id);
-    updateCurrentUserData(form)
-      .then(() => updateCurrentUserPicture(formData))
-      .then(() => router.push("/home"));
   };
 
   return (
@@ -62,7 +68,12 @@ const CompleteProfile = () => {
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
             Complete your user profile to get started
           </Text>
-          <UserForm form={form} setForm={setForm} />
+          <UserForm
+            form={form}
+            setForm={setForm}
+            shouldShowErrors={shouldShowErrors}
+            setErrorsPresent={setErrorsPresent}
+          />
           <View className="space-y-2">
             <Text className="text-base font-lRegular text-[#262322]">
               Profile Image

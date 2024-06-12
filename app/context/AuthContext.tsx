@@ -44,9 +44,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const updatedUserAttributes = userAttributes.splice(omittedAttributeIndex, 1);
   const userProfileIsCompleteValue = !updatedUserAttributes.includes(null);
 
-  console.log("profileTypeIsSelected", profileTypeIsSelected);
-  console.log("userProfileIsComplete", userProfileIsComplete);
-
   const onLogin = async (credentials: UserCredentials) => {
     return await Requests.login(credentials).then((userData) => {
       setAuthState({
@@ -71,6 +68,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             user: {} as User,
             authenticated: false,
           });
+          setProfileTypeIsSelected(false);
+          setUserProfileIsComplete(false);
         })
         .then(() => router.push("/"));
     }

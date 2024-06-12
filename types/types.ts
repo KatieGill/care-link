@@ -34,13 +34,13 @@ export const userCredentialsSchema = z.object({
 export type User = z.infer<typeof userSchema>;
 export type UserCredentials = z.infer<typeof userCredentialsSchema>;
 export type Role = z.infer<typeof roleSchema>;
-export type UserForm = {
-  first_name: string | null | undefined;
-  last_name: string | null | undefined;
+export type UserFormInput = {
+  first_name: string | null;
+  last_name: string | null;
   username: string | null | undefined;
-  zip_code: number | null | undefined;
-  number_of_children: number | null | undefined;
-  years_experience: number | null | undefined;
-  pay: number | null | undefined;
+  zip_code: string | null | undefined;
+  number_of_children: string | null | undefined;
+  years_experience: string | null | undefined;
+  pay: string | null | undefined;
   bio: string | null | undefined;
 };

@@ -22,15 +22,6 @@ const SignIn = () => {
     return await onLogin(form)
       .then(() => resetForm())
       .then(() => {
-        // if (profileTypeIsSelected === false) {
-        //   console.log("profileType is not selected", profileTypeIsSelected);
-        //   router.push("/profile-type");
-        // } else if (userProfileIsComplete === false) {
-        //   console.log("user profile is not complete");
-        //   router.push("/complete-profile");
-        // } else {
-        //   router.push("/home");
-        // }
         router.push("/home");
       })
       .catch((err) => setErrorMessage(err.message));
