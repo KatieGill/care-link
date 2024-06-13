@@ -69,12 +69,16 @@ const UserForm = ({
     !payCharactersAreValid ||
     !payLengthIsValid ||
     !bioIsValid;
+
   const careProviderErrorsPresent =
-    userErrorsPresent &&
-    (!yearsExperienceCharactersAreValid || !yearsExperienceLengthIsValid);
+    userErrorsPresent ||
+    !yearsExperienceCharactersAreValid ||
+    !yearsExperienceLengthIsValid;
+
   const careSeekerErrorsPresent =
-    userErrorsPresent &&
-    (!numberOfChildrenCharactersAreValid || !numberOfChildrenLengthIsValid);
+    userErrorsPresent ||
+    !numberOfChildrenCharactersAreValid ||
+    !numberOfChildrenLengthIsValid;
 
   useEffect(() => {
     if (user?.role === "care_provider") {

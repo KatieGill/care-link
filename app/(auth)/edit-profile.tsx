@@ -36,6 +36,7 @@ const EditProfile = () => {
   };
   const submit = () => {
     if (errorsPresent) {
+      console.log("ErrorsPresent", errorsPresent);
       setShouldShowErrors(true);
     } else {
       const formData = new FormData();
