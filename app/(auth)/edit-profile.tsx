@@ -22,30 +22,36 @@ const EditProfile = () => {
     first_name: user?.first_name,
     last_name: user?.last_name,
     username: user?.username,
-    zip_code: user?.zip_code,
-    number_of_children: user?.number_of_children,
-    years_experience: user?.years_experience,
-    pay: user?.pay,
+    zip_code: user?.zip_code?.toString(),
+    number_of_children: user?.number_of_children?.toString(),
+    years_experience: user?.years_experience?.toString(),
+    pay: user?.pay?.toString(),
     bio: user?.bio,
   });
+  const [shouldShowErrors, setShouldShowErrors] = useState(false);
+  const [errorsPresent, setErrorsPresent] = useState(false);
 
   const handleSetImage = (imageData: ImagePicker.ImagePickerResult) => {
     setImage(imageData);
   };
   const submit = () => {
-    const formData = new FormData();
-    if (image?.assets) {
-      formData.append("upload[image]", {
-        uri: image.assets[0].uri,
-        type: image.assets[0].mimeType,
-        name: image.assets[0].fileName,
-      });
-      formData.append("upload[user_id]", authState.user?.id);
-      updateCurrentUserData(form)
-        .then(() => updateCurrentUserPicture(formData))
-        .then(() => router.push("/profile"));
+    if (errorsPresent) {
+      setShouldShowErrors(true);
     } else {
-      updateCurrentUserData(form).then(() => router.push("/profile"));
+      const formData = new FormData();
+      if (image?.assets) {
+        formData.append("upload[image]", {
+          uri: image.assets[0].uri,
+          type: image.assets[0].mimeType,
+          name: image.assets[0].fileName,
+        });
+        formData.append("upload[user_id]", authState.user?.id);
+        updateCurrentUserData(form)
+          .then(() => updateCurrentUserPicture(formData))
+          .then(() => router.push("/profile"));
+      } else {
+        updateCurrentUserData(form).then(() => router.push("/profile"));
+      }
     }
   };
 
@@ -56,7 +62,12 @@ const EditProfile = () => {
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
             Update your user profile
           </Text>
-          <UserForm form={form} setForm={setForm} />
+          <UserForm
+            form={form}
+            setForm={setForm}
+            shouldShowErrors={shouldShowErrors}
+            setErrorsPresent={setErrorsPresent}
+          />
           <View className="space-y-2">
             <Text className="text-base font-lRegular text-[#262322]">
               Profile Image

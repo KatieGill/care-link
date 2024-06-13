@@ -35,8 +35,8 @@ export type User = z.infer<typeof userSchema>;
 export type UserCredentials = z.infer<typeof userCredentialsSchema>;
 export type Role = z.infer<typeof roleSchema>;
 export type UserFormInput = {
-  first_name: string | null;
-  last_name: string | null;
+  first_name: string | null | undefined;
+  last_name: string | null | undefined;
   username: string | null | undefined;
   zip_code: string | null | undefined;
   number_of_children: string | null | undefined;

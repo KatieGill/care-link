@@ -75,11 +75,14 @@ const UserForm = ({
   const careSeekerErrorsPresent =
     userErrorsPresent &&
     (!numberOfChildrenCharactersAreValid || !numberOfChildrenLengthIsValid);
-  if (user?.role === "care_provider") {
-    setErrorsPresent(careProviderErrorsPresent);
-  } else {
-    setErrorsPresent(careSeekerErrorsPresent);
-  }
+
+  useEffect(() => {
+    if (user?.role === "care_provider") {
+      setErrorsPresent(careProviderErrorsPresent);
+    } else {
+      setErrorsPresent(careSeekerErrorsPresent);
+    }
+  }, [careProviderErrorsPresent, careSeekerErrorsPresent]);
 
   return (
     <>
