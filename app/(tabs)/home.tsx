@@ -10,6 +10,7 @@ import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import ImagePickerScreen from "../../components/ImagePicker";
 import UserCard from "../../components/UserCard";
+import * as SecureStore from "expo-secure-store";
 
 const Home = () => {
   const { onLogout, authState, profileTypeIsSelected, userProfileIsComplete } =
@@ -27,9 +28,12 @@ const Home = () => {
       router.push("/complete-profile");
     }
     const getUserProfiles = async () => {
-      await Requests.getUsers("role", profileRole).then((users) =>
-        setUserProfiles(users)
-      );
+      const token = await SecureStore.getItemAsync("JWT");
+      if (token) {
+        return await Requests.getUsers(token, "role", profileRole).then(
+          (users) => setUserProfiles(users)
+        );
+      }
     };
     getUserProfiles();
   }, [userProfileIsComplete, profileTypeIsSelected]);

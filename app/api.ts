@@ -125,11 +125,16 @@ export const Requests = {
       })
       .then((res) => console.log("pic updated", res.data.image));
   },
-  getUsers: (userAttribute: string, userAttributeValue: string) => {
+  getUsers: (
+    token: string,
+    userAttribute: string,
+    userAttributeValue: string
+  ) => {
     return fetch(`${API_URL}/users/${userAttribute}/${userAttributeValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: token,
       },
       credentials: "include",
     })
