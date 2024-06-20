@@ -12,6 +12,9 @@ import { Requests } from "../api";
 import * as SecureStore from "expo-secure-store";
 import CustomButton from "../../components/CustomButton";
 import { User } from "../../types/types";
+import LinkCard from "../../components/LinkCard";
+import EmptyState from "../../components/EmptyState";
+import SearchInput from "../../components/SearchInput";
 
 const Links = () => {
   const [links, setLinks] = useState<User[]>();
@@ -33,31 +36,13 @@ const Links = () => {
       <FlatList
         data={links}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View className="px-6 mx-4 my-4  bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl flex-row justify-start items-center">
-            <View className="my-2 mr-2">
-              <Image
-                source={{
-                  uri: `http://localhost:3001/${item.image_url}`,
-                }}
-                style={{ width: 100, height: 100, margin: "auto" }}
-                className="rounded-full"
-              />
-            </View>
-
-            <View className="m-2">
-              <Text className="text-[#262322] text-2xl font-lBold">
-                {item.username}
-              </Text>
-              <Text className="text-[#78716c] font-lRegular text-sm">
-                {item.first_name}
-              </Text>
-              <Text className="text-[#78716c] font-lRegular text-sm">
-                {item.last_name}
-              </Text>
-            </View>
-          </View>
-        )}
+        renderItem={({ item }) => <LinkCard user={item} />}
+        ListEmptyComponent={
+          <EmptyState
+            title="You don't have any Links!"
+            subtitle="Start requesting links to get started"
+          />
+        }
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -77,6 +62,7 @@ const Links = () => {
                 />
               </View>
             </View>
+            <SearchInput />
           </View>
         )}
       />

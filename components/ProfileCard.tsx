@@ -2,7 +2,13 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { User } from "../types/types";
 
-const ProfileCard = ({ user }: { user: User | null }) => {
+const ProfileCard = ({
+  user,
+  isLinkProfile,
+}: {
+  user: User | null;
+  isLinkProfile: boolean;
+}) => {
   return (
     <View className="px-6 mb-2 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
       <Text className="text-[#262322] text-xl font-lBold text-center mt-2">
@@ -21,19 +27,24 @@ const ProfileCard = ({ user }: { user: User | null }) => {
           {user?.username}
         </Text>
       </View>
-      <View className="flex-row items-center my-2">
-        <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
-          <Image
-            source={require("../assets/icons/arroba.png")}
-            resizeMode="contain"
-            className="w-8 h-9"
-            style={{ margin: "auto" }}
-          />
+      {isLinkProfile ? (
+        ""
+      ) : (
+        <View className="flex-row items-center my-2">
+          <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
+            <Image
+              source={require("../assets/icons/arroba.png")}
+              resizeMode="contain"
+              className="w-8 h-9"
+              style={{ margin: "auto" }}
+            />
+          </View>
+          <Text className="text-[#262322] font-lRegular text-lg ml-3">
+            {user?.email}
+          </Text>
         </View>
-        <Text className="text-[#262322] font-lRegular text-lg ml-3">
-          {user?.email}
-        </Text>
-      </View>
+      )}
+
       <View className="flex-row items-center my-2">
         <View className="rounded-full bg-[#c7c4c1] w-10 h-10">
           <Image

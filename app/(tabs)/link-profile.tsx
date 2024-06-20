@@ -1,30 +1,44 @@
 import {
-  Image,
+  View,
+  Text,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
-  Text,
-  View,
+  Image,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
-import CustomButton from "../../components/CustomButton";
-import { useAuth } from "../context/AuthContext";
+import { router, useLocalSearchParams } from "expo-router";
 import ProfileCard from "../../components/ProfileCard";
-import { router } from "expo-router";
+import { User } from "../../types/types";
+import CustomButton from "../../components/CustomButton";
 
-const Profile = () => {
-  const { onLogout, authState } = useAuth();
-  const { user } = authState;
+const LinkProfile = () => {
+  const params = useLocalSearchParams() as unknown as User;
 
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
       <ScrollView>
+        <TouchableOpacity onPress={() => router.push("links")}>
+          <View className="flex-row justify-start items-center ml-2">
+            <View>
+              <Image
+                source={require("../../assets/icons/left.png")}
+                resizeMode="contain"
+                className="w-8 h-9"
+              />
+            </View>
+            <Text className="text-[#78716c] font-lRegular text-base">
+              Links
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         <View className="my-6 px-4 flex items-stretch">
           <View className="mb-4 justify-start flex-row">
             <View className="mr-4">
               <Image
                 source={{
-                  uri: `http://localhost:3001/${authState.user?.image_url}`,
+                  uri: `http://localhost:3001/${params.image_url}`,
                 }}
                 style={{ width: 150, height: 150, margin: "auto" }}
                 className="rounded-full"
@@ -33,15 +47,15 @@ const Profile = () => {
             <View className="flex justify-between my-4">
               <View>
                 <Text className="text-[#262322] text-2xl font-lBold">
-                  {user?.first_name}
+                  {params.first_name}
                 </Text>
                 <Text className="text-[#78716c] font-lRegular text-lg">
-                  {user?.last_name}
+                  {params.last_name}
                 </Text>
               </View>
               <View>
                 <Text className="text-[#78716c] font-lRegular text-base">
-                  {user?.role === "care_provider"
+                  {params.role === "care_provider"
                     ? "Care Provider"
                     : "Care Seeker"}
                 </Text>
@@ -58,36 +72,26 @@ const Profile = () => {
               </View>
             </View>
           </View>
-
-          <ProfileCard user={user} isLinkProfile={false} />
+          <CustomButton
+            title="Send Message"
+            handlePress={() => router.push("chat")}
+            containerStyles="px-4 my-2"
+            textStyles=""
+            isLoading={false}
+          />
+          <ProfileCard user={params} isLinkProfile={true} />
           <View className="px-6 mb-2 bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl">
             <Text className="text-[#262322] text-xl font-lBold text-center mt-2">
               Bio
             </Text>
             <Text className="text-[#262322] font-lRegular text-base py-4">
-              {user?.bio}
+              {params.bio}
             </Text>
           </View>
-          <CustomButton
-            title="Edit Profile"
-            handlePress={() => router.push("edit-profile")}
-            containerStyles="px-4 mt-4"
-            textStyles=""
-            isLoading={false}
-          />
-          <CustomButton
-            title="Logout"
-            handlePress={onLogout}
-            containerStyles="px-4 mt-4"
-            textStyles=""
-            isLoading={false}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Profile;
-
-const styles = StyleSheet.create({});
+export default LinkProfile;

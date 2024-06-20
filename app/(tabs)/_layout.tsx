@@ -100,6 +100,13 @@ const TabsLayout = () => {
             ),
           }}
         />
+        <Tabs.Screen
+          name="link-profile"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
       </Tabs>
     </>
   );
