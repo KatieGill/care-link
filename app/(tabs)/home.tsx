@@ -40,45 +40,16 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
-      {/* <ScrollView> */}
-      {/* <View className="my-6 px-4 space-y-6">
-          <View className="justify-between items-start flex-row mb-6">
-            <View>
-              <Text className="text-[#78716c] font-lRegular text-sm">
-                Welcome Back
-              </Text>
-              <Text className="text-[#262322] text-2xl font-lBold">
-                {user?.username}
-              </Text>
-            </View>
-            <View className="mt-1.5">
-              <Image
-                source={require("../../assets/icons/link.png")}
-                resizeMode="contain"
-                className="w-9 h-10"
-              />
-            </View>
-          </View>
-          <SearchInput />
-          <FlatList
-            data={userProfiles}
-            // data={[]}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <Text>{item.email}</Text>}
-            // horizontal
-            ListEmptyComponent={() => (
-              <EmptyState
-                title="No profiles found"
-                subtitle="Try searching in a different location"
-              />
-            )}
-          />
-        </View> */}
-      {/* </ScrollView> */}
       <FlatList
         data={userProfiles}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <UserCard user={item} />}
+        renderItem={({ item }) => (
+          <UserCard
+            profileRole={profileRole}
+            setUserProfiles={setUserProfiles}
+            user={item}
+          />
+        )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">

@@ -81,7 +81,6 @@ export const Requests = {
         }
       })
       .then((user) => {
-        console.log("current user", user);
         return userSchema.parse(user);
       });
   },
@@ -105,7 +104,6 @@ export const Requests = {
         }
       })
       .then((user) => {
-        console.log("current user", user);
         userSchema.parse(user);
       });
   },
@@ -141,7 +139,7 @@ export const Requests = {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((error) => {
-            throw Error(error.status.message);
+            throw Error(error.error);
           });
         } else {
           return response.json();
@@ -149,6 +147,72 @@ export const Requests = {
       })
       .then((users) => {
         return usersSchema.parse(users);
+      });
+  },
+  approveUser: (token: string, userId: number) => {
+    return fetch(`${API_URL}/users/approve/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw Error(error.error);
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  },
+  declineUser: (token: string, userId: number) => {
+    return fetch(`${API_URL}/users/decline/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw Error(error.error);
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  },
+  getUserLinks: (token: string) => {
+    return fetch(`${API_URL}/current_user/links`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw Error(error.error);
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .then((links) => {
+        return usersSchema.parse(links);
       });
   },
 };

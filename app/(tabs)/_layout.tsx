@@ -21,10 +21,6 @@ const TabIcon = ({
         tintColor={color}
         className="w-6 h-6"
       />
-      {/* <Text
-        className={`${focused ? "font-lBold" : "font-lRegular"} text-xs`}
-        style={{ color: color }}
-      ></Text> */}
     </View>
   );
 };
