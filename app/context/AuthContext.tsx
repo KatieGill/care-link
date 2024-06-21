@@ -9,10 +9,13 @@ type AuthProps = {
   onSignUp: (signUp: UserCredentials) => Promise<void>;
   onLogin: (login: UserCredentials) => Promise<void>;
   onLogout: () => Promise<void>;
+  getCurrentUserData: (token: string) => Promise<void>;
+  getLinks: (token: string) => Promise<void>;
   updateCurrentUserData: (data: {}) => Promise<void>;
   updateCurrentUserPicture: (data: FormData) => Promise<void>;
   profileTypeIsSelected: boolean;
   userProfileIsComplete: boolean;
+  links: User[];
 };
 
 const AuthContext = createContext<AuthProps>({} as AuthProps);
@@ -29,6 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: {} as User,
     authenticated: false,
   });
+  const [links, setLinks] = useState<User[]>([]);
   const [profileTypeIsSelected, setProfileTypeIsSelected] = useState(false);
   const [userProfileIsComplete, setUserProfileIsComplete] = useState(false);
 
@@ -106,16 +110,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const getLinks = async (token: string) => {
+    return await Requests.getUserLinks(token).then((links) => setLinks(links));
+  };
+
   useEffect(() => {
-    const loadToken = async () => {
+    const loadUserData = async () => {
       const token = await SecureStore.getItemAsync("JWT");
       if (token) {
         getCurrentUserData(token);
+        getLinks(token);
       } else {
         console.log("Unauthorized");
       }
     };
-    loadToken();
+    loadUserData();
     setProfileTypeIsSelected(profileTypeIsSelectedValue);
     setUserProfileIsComplete(userProfileIsCompleteValue);
   }, [profileTypeIsSelectedValue, userProfileIsCompleteValue]);
@@ -127,10 +136,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         onSignUp,
         authState,
         onLogout,
+        getCurrentUserData,
+        getLinks,
         updateCurrentUserData,
         updateCurrentUserPicture,
         profileTypeIsSelected,
         userProfileIsComplete,
+        links,
       }}
     >
       {children}

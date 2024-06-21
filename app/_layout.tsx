@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { Slot, SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { AuthProvider } from "./context/AuthContext";
-import { Toasts } from "@backpackapp-io/react-native-toast";
+import Toast, { ToastConfigParams } from "react-native-toast-message";
 import {
   GestureDetector,
   GestureHandlerRootView,
   PanGestureHandler,
 } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
@@ -26,6 +27,47 @@ const RootLayout = () => {
     "Lato-ThinItalic": require("../assets/fonts/Lato-ThinItalic.ttf"),
   });
 
+  type Props = any;
+
+  const toastConfig = {
+    linkToast: ({ props }: ToastConfigParams<Props>) => (
+      <View className="bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl h-16 px-4 flex-row items-center w-[95vw] mt-4">
+        <Image
+          source={require("../assets/icons/link.png")}
+          resizeMode="contain"
+          className="w-6 h-7"
+        />
+        <Text className="font-lRegular text-[#262322] text-lg ml-4">
+          {props.text}
+        </Text>
+      </View>
+    ),
+    declinedLinkToast: ({ props }: ToastConfigParams<Props>) => (
+      <View className="bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl h-16 px-4 flex-row items-center w-[95vw] mt-4">
+        <Image
+          source={require("../assets/icons/broken-link.png")}
+          resizeMode="contain"
+          className="w-6 h-7"
+        />
+        <Text className="font-lRegular text-[#262322] text-lg ml-4">
+          {props.text}
+        </Text>
+      </View>
+    ),
+    errorToast: ({ props }: ToastConfigParams<Props>) => (
+      <View className="bg-[#e2e1df] border-2 border-[#c7c4c1] rounded-2xl h-16 px-4 flex-row items-center w-[95vw] mt-4">
+        <Image
+          source={require("../assets/icons/warning.png")}
+          resizeMode="contain"
+          className="w-6 h-7"
+        />
+        <Text className="font-lRegular text-[#262322] text-lg ml-4">
+          {props.text}
+        </Text>
+      </View>
+    ),
+  };
+
   useEffect(() => {
     if (error) throw error;
     if (fontsLoaded) {
@@ -38,19 +80,22 @@ const RootLayout = () => {
   }
   return (
     <>
-      <GestureHandlerRootView>
-        <PanGestureHandler>
-          <AuthProvider>
-            <Stack>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
-            </Stack>
-            <Toasts />
-          </AuthProvider>
-        </PanGestureHandler>
-      </GestureHandlerRootView>
+      <SafeAreaProvider>
+        <GestureHandlerRootView>
+          <PanGestureHandler>
+            <AuthProvider>
+              <Stack>
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
+              </Stack>
+
+              <Toast config={toastConfig} />
+            </AuthProvider>
+          </PanGestureHandler>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
     </>
   );
 };

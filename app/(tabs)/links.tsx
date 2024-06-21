@@ -1,35 +1,15 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Button,
-  FlatList,
-  Image,
-} from "react-native";
+import { View, Text, SafeAreaView, FlatList, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import ProfilePicture from "../(auth)/profile-picture";
 import { Requests } from "../api";
 import * as SecureStore from "expo-secure-store";
-import CustomButton from "../../components/CustomButton";
 import { User } from "../../types/types";
 import LinkCard from "../../components/LinkCard";
 import EmptyState from "../../components/EmptyState";
 import SearchInput from "../../components/SearchInput";
+import { useAuth } from "../context/AuthContext";
 
 const Links = () => {
-  const [links, setLinks] = useState<User[]>();
-
-  useEffect(() => {
-    const getLinks = async () => {
-      const token = await SecureStore.getItemAsync("JWT");
-      if (token) {
-        return await Requests.getUserLinks(token).then((links) =>
-          setLinks(links)
-        );
-      }
-    };
-    getLinks();
-  }, []);
+  const { links } = useAuth();
 
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">

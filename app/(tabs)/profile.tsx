@@ -47,7 +47,9 @@ const Profile = () => {
                 </Text>
                 <View className="flex-row items-center">
                   <Text className="text-[#78716c] font-lRegular text-base">
-                    You have 3 Links
+                    {`You have ${user?.number_of_links} link${
+                      user?.number_of_links === 1 ? "" : "s"
+                    }`}
                   </Text>
                   <Image
                     source={require("../../assets/icons/link.png")}

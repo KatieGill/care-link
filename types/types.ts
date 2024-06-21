@@ -15,6 +15,7 @@ export const userSchema = z.object({
   pay: z.number().nullable(),
   bio: z.string().nullable(),
   image_url: z.string().nullable(),
+  number_of_links: z.number().nullable(),
 });
 
 export const usersSchema = z.array(userSchema);

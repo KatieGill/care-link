@@ -4,8 +4,9 @@ import { User } from "../types/types";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import * as SecureStore from "expo-secure-store";
 import { Requests } from "../app/api";
+import { toast } from "@backpackapp-io/react-native-toast";
+import Toast from "react-native-toast-message";
 import { useAuth } from "../app/context/AuthContext";
-import { PanGestureHandler } from "react-native-gesture-handler";
 
 const UserCard = ({
   user,
@@ -16,6 +17,8 @@ const UserCard = ({
   profileRole: "care_seeker" | "care_provider";
   setUserProfiles: (users: User[]) => void;
 }) => {
+  const { getCurrentUserData, getLinks } = useAuth();
+
   const likeUser = async () => {
     const token = await SecureStore.getItemAsync("JWT");
     if (token) {
@@ -36,6 +39,13 @@ const UserCard = ({
       );
     }
   };
+
+  const getUserData = async () => {
+    const token = await SecureStore.getItemAsync("JWT");
+    if (token) {
+      return getCurrentUserData(token).then(() => getLinks(token));
+    }
+  };
   const leftSwipeAction = () => {
     return (
       <View className="flex justify-center items-center px-6">
@@ -47,7 +57,7 @@ const UserCard = ({
           />
         </View>
         <Text className="text-[#78716c] font-lRegular text-base mt-2">
-          Declined link for
+          Decline link for
         </Text>
         <Text className="text-[#262322] text-xl font-lBold">
           {user?.username}
@@ -66,7 +76,7 @@ const UserCard = ({
           />
         </View>
         <Text className="text-[#78716c] font-lRegular text-base mt-2">
-          Requested Link for
+          Request Link for
         </Text>
         <Text className="text-[#262322] text-xl font-lBold">
           {user?.username}
@@ -81,9 +91,38 @@ const UserCard = ({
       renderRightActions={rightSwipeAction}
       onSwipeableOpen={(direction) => {
         if (direction === "right") {
-          likeUser().then(() => getUserProfiles());
+          likeUser()
+            .then((response) =>
+              Toast.show({
+                type: "linkToast",
+                props: { text: response.message },
+              })
+            )
+            .then(() => getUserProfiles())
+            .then(() => getUserData())
+            .catch((error) => {
+              console.log(error);
+              Toast.show({
+                type: "errorToast",
+                props: { text: "Unable to request link" },
+              });
+            });
         } else if (direction === "left") {
-          dislikeUser().then(() => getUserProfiles());
+          dislikeUser()
+            .then((response) =>
+              Toast.show({
+                type: "declinedLinkToast",
+                props: { text: response.message },
+              })
+            )
+            .then(() => getUserProfiles())
+            .then(() => getUserData())
+            .catch((error) =>
+              Toast.show({
+                type: "errorToast",
+                props: { text: "Unable to decline link" },
+              })
+            );
         }
       }}
     >

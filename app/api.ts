@@ -157,19 +157,15 @@ export const Requests = {
         Authorization: token,
       },
       credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw Error(error.error);
-          });
-        } else {
-          return response.json();
-        }
-      })
-      .then((response) => {
-        console.log(response);
-      });
+    }).then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw Error(error.error);
+        });
+      } else {
+        return response.json();
+      }
+    });
   },
   declineUser: (token: string, userId: number) => {
     return fetch(`${API_URL}/users/decline/${userId}`, {
@@ -179,19 +175,15 @@ export const Requests = {
         Authorization: token,
       },
       credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw Error(error.error);
-          });
-        } else {
-          return response.json();
-        }
-      })
-      .then((response) => {
-        console.log(response);
-      });
+    }).then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw Error(error.error);
+        });
+      } else {
+        return response.json();
+      }
+    });
   },
   getUserLinks: (token: string) => {
     return fetch(`${API_URL}/current_user/links`, {
