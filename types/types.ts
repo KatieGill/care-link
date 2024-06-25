@@ -32,6 +32,26 @@ export const userCredentialsSchema = z.object({
   }),
 });
 
+export const conversationSchema = z.object({
+  id: z.number(),
+  sender_id: z.number(),
+  recipient_id: z.number(),
+  created_at: z.date(),
+});
+
+export const messageSchema = z.object({
+  id: z.number(),
+  user_id: z.number(),
+  body: z.string(),
+  read: z.boolean(),
+  created_at: z.date(),
+});
+
+export const conversationDataSchema = z.object({
+  conversation: conversationSchema,
+  messages: z.array(messageSchema),
+});
+
 export type User = z.infer<typeof userSchema>;
 export type UserCredentials = z.infer<typeof userCredentialsSchema>;
 export type Role = z.infer<typeof roleSchema>;

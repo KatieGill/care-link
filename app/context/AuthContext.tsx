@@ -80,9 +80,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getCurrentUserData = async (token: string) => {
-    return await Requests.getCurrentUser(token).then((userData) =>
-      setAuthState({ user: userData, authenticated: true })
-    );
+    return await Requests.getCurrentUser(token)
+      .then((userData) => setAuthState({ user: userData, authenticated: true }))
+      .catch((error) => console.log(error));
   };
 
   const updateCurrentUserData = async (data: {}) => {
@@ -111,7 +111,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getLinks = async (token: string) => {
-    return await Requests.getUserLinks(token).then((links) => setLinks(links));
+    return await Requests.getUserLinks(token)
+      .then((links) => setLinks(links))
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {

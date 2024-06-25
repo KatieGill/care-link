@@ -1,5 +1,8 @@
 import {
   UserCredentials,
+  conversationDataSchema,
+  messageSchema,
+  messagesSchema,
   userDataSchema,
   userSchema,
   usersSchema,
@@ -73,9 +76,7 @@ export const Requests = {
     })
       .then((response) => {
         if (!response.ok) {
-          return response.json().then((error) => {
-            throw Error(error.status.message);
-          });
+          throw Error("Unauthorized");
         } else {
           return response.json();
         }
@@ -196,6 +197,26 @@ export const Requests = {
     })
       .then((response) => {
         if (!response.ok) {
+          throw Error("Unauthorized");
+        } else {
+          return response.json();
+        }
+      })
+      .then((links) => {
+        return usersSchema.parse(links);
+      });
+  },
+  openConversation: (token: string, userId: number) => {
+    return fetch(`${API_URL}/current_user/open_conversation/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
           return response.json().then((error) => {
             throw Error(error.error);
           });
@@ -203,8 +224,31 @@ export const Requests = {
           return response.json();
         }
       })
-      .then((links) => {
-        return usersSchema.parse(links);
+      .then((conversationData) => {
+        return conversationDataSchema.parse(conversationData);
+      });
+  },
+  postMessage: (token: string, messageData: {}) => {
+    return fetch(`${API_URL}/messages`, {
+      method: "POST",
+      body: JSON.stringify(messageData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw Error(error.error);
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .then((message) => {
+        return messageSchema.parse(message);
       });
   },
 };
