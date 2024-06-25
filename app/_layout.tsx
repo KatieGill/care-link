@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { AuthProvider } from "./context/AuthContext";
 import Toast, { ToastConfigParams } from "react-native-toast-message";
 import {
+  Gesture,
   GestureDetector,
   GestureHandlerRootView,
   PanGestureHandler,
@@ -78,23 +79,20 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) {
     return null;
   }
+
   return (
     <>
       <SafeAreaProvider>
-        <GestureHandlerRootView>
-          <PanGestureHandler>
-            <AuthProvider>
-              <Stack>
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
-              </Stack>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
+          </Stack>
 
-              <Toast config={toastConfig} />
-            </AuthProvider>
-          </PanGestureHandler>
-        </GestureHandlerRootView>
+          <Toast config={toastConfig} />
+        </AuthProvider>
       </SafeAreaProvider>
     </>
   );
