@@ -76,7 +76,9 @@ const LinkProfile = () => {
           </View>
           <CustomButton
             title="Send Message"
-            handlePress={() => router.push("chat")}
+            handlePress={() =>
+              router.push({ pathname: "open-chat", params: { ...params } })
+            }
             containerStyles="px-4 my-2"
             textStyles=""
             isLoading={false}
