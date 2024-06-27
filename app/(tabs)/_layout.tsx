@@ -107,6 +107,13 @@ const TabsLayout = () => {
             headerShown: false,
           }}
         />
+        <Tabs.Screen
+          name="open-chat"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
       </Tabs>
     </>
   );

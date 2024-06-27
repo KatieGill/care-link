@@ -36,7 +36,7 @@ export const conversationSchema = z.object({
   id: z.number(),
   sender_id: z.number(),
   recipient_id: z.number(),
-  created_at: z.date(),
+  created_at: z.string(),
 });
 
 export const messageSchema = z.object({
@@ -44,7 +44,7 @@ export const messageSchema = z.object({
   user_id: z.number(),
   body: z.string(),
   read: z.boolean(),
-  created_at: z.date(),
+  created_at: z.string(),
 });
 
 export const conversationDataSchema = z.object({
@@ -55,6 +55,7 @@ export const conversationDataSchema = z.object({
 export type User = z.infer<typeof userSchema>;
 export type UserCredentials = z.infer<typeof userCredentialsSchema>;
 export type Role = z.infer<typeof roleSchema>;
+export type ConversationDataSchema = z.infer<typeof conversationDataSchema>;
 export type UserFormInput = {
   first_name: string | null | undefined;
   last_name: string | null | undefined;

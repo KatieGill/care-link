@@ -241,14 +241,15 @@ export const Requests = {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((error) => {
-            throw Error(error.error);
+            console.log(error.error);
           });
         } else {
           return response.json();
         }
       })
       .then((message) => {
-        return messageSchema.parse(message);
+        console.log(message);
+        // return messageSchema.parse(message);
       });
   },
 };
