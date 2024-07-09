@@ -31,9 +31,9 @@ const MessageBubble = ({
           </Text>
         </View>
       </View>
-      <View>
+      {/* <View>
         <Text>{`${messageRead ? "Read" : "Delivered"}`}</Text>
-      </View>
+      </View> */}
     </>
   );
 };

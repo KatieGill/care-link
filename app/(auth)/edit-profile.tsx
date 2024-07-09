@@ -1,4 +1,11 @@
-import { View, Text, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import FormField from "../../components/FormField";
@@ -59,6 +66,20 @@ const EditProfile = () => {
   return (
     <SafeAreaView className="bg-[#f4f3f2] h-full">
       <ScrollView>
+        <TouchableOpacity onPress={() => router.push("profile")}>
+          <View className="flex-row justify-start items-center ml-2">
+            <View>
+              <Image
+                source={require("../../assets/icons/left.png")}
+                resizeMode="contain"
+                className="w-8 h-9"
+              />
+            </View>
+            <Text className="text-[#78716c] font-lRegular text-base">
+              Profile
+            </Text>
+          </View>
+        </TouchableOpacity>
         <View className="w-full min-h-[85vh] justify-center px-4">
           <Text className="text-[#262322] font-lRegular my-4 text-xl">
             Update your user profile

@@ -11,6 +11,7 @@ import CustomButton from "../../components/CustomButton";
 import { useAuth } from "../context/AuthContext";
 import ProfileCard from "../../components/ProfileCard";
 import { router } from "expo-router";
+import { TouchableOpacity } from "react-native";
 
 const Profile = () => {
   const { onLogout, authState } = useAuth();
@@ -45,18 +46,20 @@ const Profile = () => {
                     ? "Care Provider"
                     : "Care Seeker"}
                 </Text>
-                <View className="flex-row items-center">
-                  <Text className="text-[#78716c] font-lRegular text-base">
-                    {`You have ${user?.number_of_links} link${
-                      user?.number_of_links === 1 ? "" : "s"
-                    }`}
-                  </Text>
-                  <Image
-                    source={require("../../assets/icons/link.png")}
-                    resizeMode="contain"
-                    className="w-4 h-5 ml-1"
-                  />
-                </View>
+                <TouchableOpacity onPress={() => router.push("links")}>
+                  <View className="flex-row items-center">
+                    <Text className="text-[#78716c] font-lRegular text-base">
+                      {`You have ${user?.number_of_links} link${
+                        user?.number_of_links === 1 ? "" : "s"
+                      }`}
+                    </Text>
+                    <Image
+                      source={require("../../assets/icons/link.png")}
+                      resizeMode="contain"
+                      className="w-4 h-5 ml-1"
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
